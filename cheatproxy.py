@@ -13,17 +13,11 @@ import SocketServer
 from cheatbt import CheatBT
 
 TRACKERS_FILE = "trackers"
-VERBOSE = False
 
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
-        print VERBOSE
         c = CheatBT(TRACKERS_FILE)
-        if VERBOSE:
-            print "Before: " + self.path
-        cheatpath = c.cheat_url(self.path, VERBOSE)
-        if VERBOSE:
-            print "After: " + cheatpath
+        cheatpath = c.cheat_url(self.path)
 
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
@@ -37,8 +31,6 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         try:
             if self._connect_to(netloc, soc):
-                if VERBOSE:
-                    self.log_request()
                 request = urlparse.urlunparse(('', '', path, params, query, ''))
                 soc.send("%s %s %s\r\n" % (self.command, request,
                                            self.request_version))
@@ -126,9 +118,7 @@ def main():
         if opt == "-f":
             global TRACKERS_FILE
             TRACKERS_FILE = val
-        if opt == "-v":
-            global VERBOSE
-            VERBOSE = True
+        if opt == "-v": pass
         if opt == "-h": usage()
 
     httpd = CheatServer((host, port), CheatHandler)

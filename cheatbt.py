@@ -34,7 +34,7 @@ class CheatBT(object):
         if "default" not in self.map:
             self.map["default"] = 1
 
-    def cheat_url(self, url, verbose=False):
+    def cheat_url(self, url):
         """Modifies BitTorrent tracker URLs, faking the amount of data
         uploaded. All other URLs should pass through unimpeded.
 
@@ -76,8 +76,6 @@ class CheatBT(object):
             # TODO: Don't bother munging URL if multiple is set to 1.
             #if "uploaded" in query and query["uploaded"] != "0":
             if "uploaded" in query:
-                if verbose:
-                    print parsed.hostname + ": " + query["uploaded"],
                 if parsed.hostname in self.map:
                     multiple = self.map[parsed.hostname]
                 else:
@@ -85,8 +83,6 @@ class CheatBT(object):
                 # TODO: Skew fake value so it's not an exact multiple of the
                 # real value.
                 query["uploaded"] = str(int(query["uploaded"]) * multiple)
-                if verbose:
-                    print "-> " + query["uploaded"] + " (%d)" % multiple
 
                 new_query = ""
                 for k in query.keys():
