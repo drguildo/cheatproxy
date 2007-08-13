@@ -1,5 +1,0 @@
-take filename on commandline
-skew
-https
-don't bother munging headers if the multiple is set to 1
-reload when file changes

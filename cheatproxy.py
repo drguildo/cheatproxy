@@ -28,6 +28,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
 
+        # TODO: https support.
         if scheme != 'http' or fragment or not netloc:
             self.send_error(400, "bad url %s" % cheatpath)
             return
@@ -122,6 +123,7 @@ def main():
     for opt, val in opts:
         if opt == "-b": host = val
         if opt == "-p": port = int(val)
+        # FIXME: This doesn't actually work yet.
         if opt == "-f":
             global TRACKERS_FILE
             TRACKERS_FILE = val

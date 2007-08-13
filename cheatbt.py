@@ -4,6 +4,7 @@ from urlparse import urlparse
 from odict import OrderedDict
 
 class CheatBT(object):
+    # TODO: Reload when file changes.
     def __init__(self, filename="trackers"):
         """Initialises tracker to ratio multiple mappings from the specified
         file.
@@ -60,6 +61,7 @@ class CheatBT(object):
 
         if parsed.query != "" and "=" in parsed.query:
             query = OrderedDict([i.split("=") for i in parsed.query.split("&")])
+            # TODO: Don't bother munging URL if multiple is set to 1.
             #if "uploaded" in query and query["uploaded"] != "0":
             if "uploaded" in query:
                 if verbose:
@@ -68,6 +70,8 @@ class CheatBT(object):
                     multiple = self.map[parsed.hostname]
                 else:
                     multiple = self.map["default"]
+                # TODO: Skew fake value so it's not an exact multiple of the
+                # real value.
                 query["uploaded"] = str(int(query["uploaded"]) * multiple)
                 if verbose:
                     print "-> " + query["uploaded"] + " (%d)" % multiple
