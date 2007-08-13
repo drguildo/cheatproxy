@@ -86,16 +86,6 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             if count == max_idling:
                 break
 
-        """
-        c = CheatBT()
-        headers = data.splitlines(True)
-        request = headers[0].split()
-        request[1] = c.cheat_url(request[1], True)
-        request[2] = request[2] + "\r\n"
-        headers[0] = " ".join(request)
-        headers = "".join(headers)
-        """
-
 class CheatServer(SocketServer.ThreadingMixIn,
                   BaseHTTPServer.HTTPServer):
     pass
