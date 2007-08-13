@@ -4,6 +4,7 @@ import getopt
 import select
 import socket
 import string
+import sys
 import urlparse
 
 import BaseHTTPServer
@@ -11,12 +12,18 @@ import SocketServer
 
 from cheatbt import CheatBT
 
+TRACKERS_FILE = "trackers"
+VERBOSE = False
+
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
+        print VERBOSE
         c = CheatBT()
-        print "Before: " + self.path
-        cheatpath = c.cheat_url(self.path, True)
-        print "After: " + cheatpath
+        if VERBOSE:
+            print "Before: " + self.path
+        cheatpath = c.cheat_url(self.path, VERBOSE)
+        if VERBOSE:
+            print "After: " + cheatpath
 
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
@@ -29,7 +36,8 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         try:
             if self._connect_to(netloc, soc):
-                self.log_request()
+                if VERBOSE:
+                    self.log_request()
                 request = urlparse.urlunparse(('', '', path, params, query, ''))
                 soc.send("%s %s %s\r\n" % (self.command, request,
                                            self.request_version))
@@ -90,6 +98,40 @@ class CheatServer(SocketServer.ThreadingMixIn,
                   BaseHTTPServer.HTTPServer):
     pass
 
-if __name__ == "__main__":
-    httpd = CheatServer(('localhost', 31337), CheatHandler)
+def usage():
+        print """
+usage: %s [-b host] [-p port] [-f file] [-v] [-h]
+
+  -b host  IP or hostname to bind to. Default is localhost.
+  -p port  Port to listen on. Default is 8000.
+  -f file  Mappings file.
+  -v       Verbose output.
+  -h       What you're reading.
+""" % sys.argv[0]
+        sys.exit(1)
+
+def main():
+    host = "localhost"
+    port = 8000
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "b:f:p:hv")
+    except getopt.GetoptError:
+        usage()
+
+    for opt, val in opts:
+        if opt == "-b": host = val
+        if opt == "-p": port = int(val)
+        if opt == "-f":
+            global TRACKERS_FILE
+            TRACKERS_FILE = val
+        if opt == "-v":
+            global VERBOSE
+            VERBOSE = True
+        if opt == "-h": usage()
+
+    httpd = CheatServer((host, port), CheatHandler)
     httpd.serve_forever()
+
+if __name__ == "__main__":
+    main()
