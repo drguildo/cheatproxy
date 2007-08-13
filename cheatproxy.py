@@ -18,7 +18,7 @@ VERBOSE = False
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
         print VERBOSE
-        c = CheatBT()
+        c = CheatBT(TRACKERS_FILE)
         if VERBOSE:
             print "Before: " + self.path
         cheatpath = c.cheat_url(self.path, VERBOSE)
@@ -123,7 +123,6 @@ def main():
     for opt, val in opts:
         if opt == "-b": host = val
         if opt == "-p": port = int(val)
-        # FIXME: This doesn't actually work yet.
         if opt == "-f":
             global TRACKERS_FILE
             TRACKERS_FILE = val
