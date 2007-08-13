@@ -41,8 +41,6 @@ class CheatBT(object):
         >>> c = CheatBT("test/test1")
         >>> c.cheat_url("http://www.example.net/")
         'http://www.example.net/'
-        >>> c.cheat_url("http://www.example.net:6969/")
-        'http://www.example.net:6969/'
         >>> c.cheat_url("http://www.example.net/?test")
         'http://www.example.net/?test'
         >>> c.cheat_url("http://www.example.net/test?test")
@@ -55,6 +53,20 @@ class CheatBT(object):
         'http://www.example.net/test?uploaded=246912'
         >>> c.cheat_url("http://www.example.net/test?test1=val&test2=val&downloaded=5&uploaded=10")
         'http://www.example.net/test?test1=val&test2=val&downloaded=5&uploaded=20'
+        >>> c.cheat_url("http://www.example.net:6969/")
+        'http://www.example.net:6969/'
+        >>> c.cheat_url("http://www.example.net:6969/?test")
+        'http://www.example.net:6969/?test'
+        >>> c.cheat_url("http://www.example.net:6969/test?test")
+        'http://www.example.net:6969/test?test'
+        >>> c.cheat_url("http://www.example.net:6969/test?test=val")
+        'http://www.example.net:6969/test?test=val'
+        >>> c.cheat_url("http://www.example.net:6969/test?uploaded=0")
+        'http://www.example.net:6969/test?uploaded=0'
+        >>> c.cheat_url("http://www.example.net:6969/test?uploaded=123456")
+        'http://www.example.net:6969/test?uploaded=246912'
+        >>> c.cheat_url("http://www.example.net:6969/test?test1=val&test2=val&downloaded=5&uploaded=10")
+        'http://www.example.net:6969/test?test1=val&test2=val&downloaded=5&uploaded=20'
         """
 
         parsed = urlparse(url)
