@@ -16,16 +16,16 @@ import SocketServer
 
 from cheatbt import CheatBT
 
-TRACKERS_FILE = "trackers"
-
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Used by CheatServer/HTTPServer to handle HTTP requests"""
+
+    trackers_file = "trackers"
 
     def do_GET(self):
         """Called by BaseHTTPRequestHandler when a GET request is
         received from a client."""
 
-        cheat = CheatBT(TRACKERS_FILE)
+        cheat = CheatBT(CheatHandler.trackers_file)
         cheatpath = cheat.cheat_url(self.path)
 
         (scheme, netloc, path, params, query, fragment) = \
@@ -132,8 +132,7 @@ def main():
         if opt == "-p":
             port = int(val)
         if opt == "-f":
-            global TRACKERS_FILE
-            TRACKERS_FILE = val
+            CheatHandler.trackers_file = val
         if opt == "-v":
             pass
         if opt == "-h":
