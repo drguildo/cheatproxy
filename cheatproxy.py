@@ -13,7 +13,6 @@ import sys
 import urlparse
 
 import BaseHTTPServer
-import SocketServer
 
 from cheatbt import CheatBT
 
