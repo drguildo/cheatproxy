@@ -31,11 +31,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         cheat = CheatBT(CheatHandler.trackers_file)
         cheatpath = cheat.cheat_url(self.path)
 
-        if cheatpath == self.path:
-            CheatHandler.logger.debug(cheatpath + " (unmodified)")
-        else:
-            CheatHandler.logger.debug("bef: " + self.path)
-            CheatHandler.logger.debug("aft: " + cheatpath)
+        CheatHandler.logger.info(cheatpath)
 
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
@@ -157,7 +153,10 @@ def main():
             usage()
 
     httpd = CheatServer((host, port), CheatHandler)
+
     logger.info("%s listening on %s:%d" % (sys.argv[0], host, port))
+    logger.info("using %s for mappings" % CheatHandler.trackers_file)
+
     httpd.serve_forever()
 
 if __name__ == "__main__":
