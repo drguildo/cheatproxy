@@ -6,6 +6,7 @@ uploaded. Free from artificial colours and preservatives. Web 2.0
 compatible."""
 
 import getopt
+import logging
 import select
 import socket
 import sys
@@ -21,12 +22,20 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     trackers_file = "trackers"
 
+    logger = logging.getLogger("cheatproxy.CheatHandler")
+
     def do_GET(self):
         """Called by BaseHTTPRequestHandler when a GET request is
         received from a client."""
 
         cheat = CheatBT(CheatHandler.trackers_file)
         cheatpath = cheat.cheat_url(self.path)
+
+        if cheatpath == self.path:
+            CheatHandler.logger.debug(cheatpath + " (unmodified)")
+        else:
+            CheatHandler.logger.debug("bef: " + self.path)
+            CheatHandler.logger.debug("aft: " + cheatpath)
 
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
@@ -107,12 +116,13 @@ def usage():
     """Prints usage information and exits."""
 
     print """
-usage: %s [-b host] [-p port] [-f file] [-v] [-h]
+usage: %s [-b host] [-p port] [-f file] [-v] [-d] [-h]
 
   -b host  IP or hostname to bind to. Default is localhost.
   -p port  Port to listen on. Default is 8000.
   -f file  Mappings file.
   -v       Verbose output.
+  -d       Debug output.
   -h       What you're reading.
 """ % sys.argv[0]
     sys.exit(1)
@@ -122,9 +132,15 @@ def main():
     port = 8000
 
     try:
-        opts, _ = getopt.getopt(sys.argv[1:], "b:f:p:hv")
+        opts, _ = getopt.getopt(sys.argv[1:], "b:f:p:hvd")
     except getopt.GetoptError:
         usage()
+
+    logger = logging.getLogger("cheatproxy")
+    ch = logging.StreamHandler()
+    ch.setFormatter(
+        logging.Formatter("%(asctime)s:%(name)s:%(levelname)s %(message)s"))
+    logger.addHandler(ch)
 
     for opt, val in opts:
         if opt == "-b":
@@ -134,11 +150,14 @@ def main():
         if opt == "-f":
             CheatHandler.trackers_file = val
         if opt == "-v":
-            pass
+            logger.setLevel(logging.INFO)
+        if opt == "-d":
+            logger.setLevel(logging.DEBUG)
         if opt == "-h":
             usage()
 
     httpd = CheatServer((host, port), CheatHandler)
+    logger.info("%s listening on %s:%d" % (sys.argv[0], host, port))
     httpd.serve_forever()
 
 if __name__ == "__main__":
