@@ -18,7 +18,7 @@ import SocketServer
 from cheatbt import CheatBT
 
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    """Used by CheatServer/HTTPServer to handle HTTP requests"""
+    """Used by HTTPServer to handle HTTP requests"""
 
     trackers_file = "trackers"
 
@@ -103,11 +103,6 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             if count == max_idling:
                 break
 
-class CheatServer(SocketServer.ThreadingMixIn,
-                  BaseHTTPServer.HTTPServer):
-    """HTTPServer with added thready goodness. I think."""
-    pass
-
 def usage():
     """Prints usage information and exits."""
 
@@ -152,7 +147,7 @@ def main():
         if opt == "-h":
             usage()
 
-    httpd = CheatServer((host, port), CheatHandler)
+    httpd = BaseHTTPServer.HTTPServer((host, port), CheatHandler)
 
     logger.info("%s listening on %s:%d" % (sys.argv[0], host, port))
 
@@ -162,4 +157,5 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
+        logging.shutdown()
         sys.exit()
