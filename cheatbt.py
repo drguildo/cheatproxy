@@ -1,9 +1,9 @@
+import logging
 from urlparse import urlparse
 
 from odict import OrderedDict
 
 class CheatBT(object):
-    # TODO: Reload when file changes.
     def __init__(self, filename="trackers"):
         """Initialises tracker to ratio multiple mappings from the specified
         file.
@@ -25,6 +25,11 @@ class CheatBT(object):
         >>> c.map["default"]
         1
         """
+
+        self.logger = logging.getLogger("cheatproxy.CheatBT")
+
+        self.logger.info('loading mappings from "' + filename + '"')
+
         file = open(filename)
         self.map = {}
         for line in file:

@@ -155,7 +155,6 @@ def main():
     httpd = CheatServer((host, port), CheatHandler)
 
     logger.info("%s listening on %s:%d" % (sys.argv[0], host, port))
-    logger.info("using %s for mappings" % CheatHandler.trackers_file)
 
     httpd.serve_forever()
 
