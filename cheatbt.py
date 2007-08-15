@@ -1,4 +1,3 @@
-import string
 from urlparse import urlparse
 
 from odict import OrderedDict
