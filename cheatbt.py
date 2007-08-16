@@ -3,7 +3,7 @@ from urlparse import urlparse
 
 from odict import OrderedDict
 
-logger = logging.getLogger("cheatproxy.cheatbt")
+logger = logging.getLogger("cheatbt")
 
 class CheatBT(object):
     def __init__(self, filename="trackers"):

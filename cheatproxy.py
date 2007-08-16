@@ -17,10 +17,6 @@ import BaseHTTPServer
 from cheatbt import CheatBT
 
 logger = logging.getLogger("cheatproxy")
-ch = logging.StreamHandler()
-ch.setFormatter(
-    logging.Formatter("%(asctime)s:%(name)s:%(levelname)s %(message)s"))
-logger.addHandler(ch)
 
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Used by HTTPServer to handle HTTP requests"""
@@ -125,6 +121,12 @@ def main():
     host = "localhost"
     port = 8000
 
+    rootlogger = logging.getLogger("")
+    ch = logging.StreamHandler()
+    ch.setFormatter(
+        logging.Formatter("%(asctime)s:%(name)s:%(levelname)s %(message)s"))
+    rootlogger.addHandler(ch)
+
     try:
         opts, _ = getopt.getopt(sys.argv[1:], "b:f:p:hvd")
     except getopt.GetoptError:
@@ -138,15 +140,15 @@ def main():
         if opt == "-f":
             CheatHandler.trackers_file = val
         if opt == "-v":
-            logger.setLevel(logging.INFO)
+            rootlogger.setLevel(logging.INFO)
         if opt == "-d":
-            logger.setLevel(logging.DEBUG)
+            rootlogger.setLevel(logging.DEBUG)
         if opt == "-h":
             usage()
 
     httpd = BaseHTTPServer.HTTPServer((host, port), CheatHandler)
 
-    logger.info("%s listening on %s:%d" % (sys.argv[0], host, port))
+    logger.info("listening on %s:%d" % (host, port))
 
     httpd.serve_forever()
 
