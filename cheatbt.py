@@ -84,6 +84,12 @@ class CheatBT(object):
                     multiple = self.map[parsed.hostname]
                 else:
                     multiple = self.map["default"]
+
+                # Don't bother munging the URL if the upload amount isn't going
+                # to change.
+                if multiple == 1:
+                    return url
+
                 # TODO: Skew fake value so it's not an exact multiple of the
                 # real value.
                 query["uploaded"] = str(int(query["uploaded"]) * multiple)
