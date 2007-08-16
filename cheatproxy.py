@@ -16,12 +16,16 @@ import BaseHTTPServer
 
 from cheatbt import CheatBT
 
+logger = logging.getLogger("cheatproxy")
+ch = logging.StreamHandler()
+ch.setFormatter(
+    logging.Formatter("%(asctime)s:%(name)s:%(levelname)s %(message)s"))
+logger.addHandler(ch)
+
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Used by HTTPServer to handle HTTP requests"""
 
     trackers_file = "trackers"
-
-    logger = logging.getLogger("cheatproxy.CheatHandler")
 
     def do_GET(self):
         """Called by BaseHTTPRequestHandler when a GET request is
@@ -30,7 +34,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         cheat = CheatBT(CheatHandler.trackers_file)
         cheatpath = cheat.cheat_url(self.path)
 
-        CheatHandler.logger.info(cheatpath)
+        logger.info(cheatpath)
 
         (scheme, netloc, path, params, query, fragment) = \
             urlparse.urlparse(cheatpath, 'http')
@@ -125,12 +129,6 @@ def main():
         opts, _ = getopt.getopt(sys.argv[1:], "b:f:p:hvd")
     except getopt.GetoptError:
         usage()
-
-    logger = logging.getLogger("cheatproxy")
-    ch = logging.StreamHandler()
-    ch.setFormatter(
-        logging.Formatter("%(asctime)s:%(name)s:%(levelname)s %(message)s"))
-    logger.addHandler(ch)
 
     for opt, val in opts:
         if opt == "-b":

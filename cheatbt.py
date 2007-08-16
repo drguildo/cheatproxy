@@ -3,6 +3,8 @@ from urlparse import urlparse
 
 from odict import OrderedDict
 
+logger = logging.getLogger("cheatproxy.cheatbt")
+
 class CheatBT(object):
     def __init__(self, filename="trackers"):
         """Initialises tracker to ratio multiple mappings from the specified
@@ -26,9 +28,7 @@ class CheatBT(object):
         1
         """
 
-        self.logger = logging.getLogger("cheatproxy.CheatBT")
-
-        self.logger.info('loading mappings from "' + filename + '"')
+        logger.info('loading mappings from "' + filename + '"')
 
         file = open(filename)
         self.map = {}
