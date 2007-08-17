@@ -69,7 +69,7 @@ def cheat(url, mappings):
     new_query = new_query[:-1] # Remove trailing "&"
 
     # <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
-    new_url = urlparse.urlunparse(parsed.scheme, parsed.netloc, parsed.path,
-                                  parsed.params, new_query, parsed.fragment)
+    new_url = urlparse.urlunparse((parsed.scheme, parsed.netloc, parsed.path,
+                                   parsed.params, new_query, parsed.fragment))
 
     return new_url
