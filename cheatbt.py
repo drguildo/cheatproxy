@@ -1,5 +1,5 @@
 import logging
-from urlparse import urlparse
+import urlparse
 
 from odict import OrderedDict
 
@@ -32,7 +32,7 @@ def cheat(url, mappings):
     uploaded. All other URLs should pass through unimpeded.
     """
 
-    parsed = urlparse(url)
+    parsed = urlparse.urlparse(url)
 
     if "=" not in parsed.query:
         return url
@@ -69,17 +69,7 @@ def cheat(url, mappings):
     new_query = new_query[:-1] # Remove trailing "&"
 
     # <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
-    new_url = ""
-    if parsed.scheme:
-        new_url += parsed.scheme + "://"
-    if parsed.netloc:
-        new_url += parsed.netloc
-    if parsed.path:
-        new_url += parsed.path
-    if parsed.params:
-        new_url += ";" + parsed.params
-    new_url += "?" + new_query
-    if parsed.fragment:
-        new_url += "#" + parsed.fragment
+    new_url = urlparse.urlunparse(parsed.scheme, parsed.netloc, parsed.path,
+                                  parsed.params, new_query, parsed.fragment)
 
     return new_url
