@@ -16,8 +16,6 @@ import BaseHTTPServer
 
 from cheatbt import CheatBT
 
-logger = logging.getLogger("cheatproxy")
-
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Used by HTTPServer to handle HTTP requests"""
 
@@ -30,6 +28,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         cheat = CheatBT(CheatHandler.trackers_file)
         cheatpath = cheat.cheat_url(self.path)
 
+        logger = logging.getLogger("cheatproxy")
         logger.info(cheatpath)
 
         (scheme, netloc, path, params, query, fragment) = \
@@ -148,6 +147,7 @@ def main():
 
     httpd = BaseHTTPServer.HTTPServer((host, port), CheatHandler)
 
+    logger = logging.getLogger("cheatproxy")
     logger.info("listening on %s:%d" % (host, port))
 
     httpd.serve_forever()

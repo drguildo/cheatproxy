@@ -3,8 +3,6 @@ from urlparse import urlparse
 
 from odict import OrderedDict
 
-logger = logging.getLogger("cheatbt")
-
 class CheatBT(object):
     def __init__(self, filename="trackers"):
         """Initialises tracker to ratio multiple mappings from the specified
@@ -28,6 +26,7 @@ class CheatBT(object):
         1
         """
 
+        logger = logging.getLogger("cheatbt")
         logger.info('loading mappings from "' + filename + '"')
 
         file = open(filename)
@@ -77,7 +76,6 @@ class CheatBT(object):
 
         if parsed.query != "" and "=" in parsed.query:
             query = OrderedDict([i.split("=") for i in parsed.query.split("&")])
-            # TODO: Don't bother munging URL if multiple is set to 1.
             #if "uploaded" in query and query["uploaded"] != "0":
             if "uploaded" in query:
                 if parsed.hostname in self.map:
@@ -90,9 +88,14 @@ class CheatBT(object):
                 if multiple == 1:
                     return url
 
-                # TODO: Skew fake value so it's not an exact multiple of the
-                # real value.
-                query["uploaded"] = str(int(query["uploaded"]) * multiple)
+                fakeupload = int(query["uploaded"])
+
+                logger = logging.getLogger("cheatbt")
+                logger.debug("%s: %d -> %d" % (parsed.hostname, fakeupload,
+                                               fakeupload * multiple))
+
+                fakeupload = fakeupload * multiple
+                query["uploaded"] = str(fakeupload)
 
                 new_query = ""
                 for k in query.keys():
