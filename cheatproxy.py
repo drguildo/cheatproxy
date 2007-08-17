@@ -26,7 +26,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         received from a client."""
 
         cheat = CheatBT(CheatHandler.trackers_file)
-        cheatpath = cheat.cheat_url(self.path)
+        cheatpath = cheat.cheat(self.path)
 
         logger = logging.getLogger("cheatproxy")
         logger.info(cheatpath)
