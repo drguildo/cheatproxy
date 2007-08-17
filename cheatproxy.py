@@ -48,8 +48,12 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                                            self.request_version))
                 self.headers['Connection'] = 'close'
                 del self.headers['Proxy-Connection']
-                for key_val in self.headers.items():
-                    soc.send("%s: %s\r\n" % key_val)
+                # This is naughty. But rfc822.Message, which self.headers is a
+                # subclass of, insists on converting headers to lowercase when
+                # accessed conventionally (i.e. as a dict).
+                for header in self.headers.headers:
+                    soc.send(header)
+                    logger.debug(repr(header))
                 soc.send("\r\n")
                 self._read_write(soc)
         finally:
