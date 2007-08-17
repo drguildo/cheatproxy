@@ -29,11 +29,11 @@ class CheatBT(object):
         logger = logging.getLogger("cheatbt")
         logger.info('loading mappings from "' + filename + '"')
 
-        file = open(filename)
+        mappings = open(filename)
         self.map = {}
-        for line in file:
-            k, v = line.split(":")
-            self.map[k.strip()] = int(v.strip())
+        for line in mappings:
+            tracker, multiple = line.split(":")
+            self.map[tracker.strip()] = int(multiple.strip())
         if "default" not in self.map:
             self.map["default"] = 1
 
