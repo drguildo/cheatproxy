@@ -14,19 +14,18 @@ import urlparse
 
 import BaseHTTPServer
 
-from cheatbt import CheatBT
+import cheatbt
 
 class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Used by HTTPServer to handle HTTP requests"""
 
-    trackers_file = "trackers"
+    mappings = {}
 
     def do_GET(self):
         """Called by BaseHTTPRequestHandler when a GET request is
         received from a client."""
 
-        cheat = CheatBT(CheatHandler.trackers_file)
-        cheatpath = cheat.cheat(self.path)
+        cheatpath = cheatbt.cheat(self.path, CheatHandler.mappings)
 
         logger = logging.getLogger("cheatproxy")
         logger.info(cheatpath)
@@ -141,7 +140,7 @@ def main():
         if opt == "-p":
             port = int(val)
         if opt == "-f":
-            CheatHandler.trackers_file = val
+            CheatHandler.mappings = cheatbt.load_mappings(val)
         if opt == "-v":
             rootlogger.setLevel(logging.INFO)
         if opt == "-d":
