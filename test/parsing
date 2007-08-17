@@ -1,0 +1,6 @@
+default  :	2
+tracker1.example.net	:   0
+tracker2.example.net:  10
+tracker3.example.net : 123
+tracker4.example.net    :456
+tracker5.example.net:789
