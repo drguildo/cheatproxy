@@ -35,7 +35,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         # TODO: https support.
         if scheme != 'http' or fragment or not netloc:
-            self.send_error(501, "bad url %s" % cheatpath)
+            self.send_error(501)
             return
 
         soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
