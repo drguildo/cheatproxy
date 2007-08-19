@@ -60,8 +60,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.connection.close()
 
     def _connect_to(self, netloc, soc):
-        """Attempt to connect to establish a connection to the remote
-        server."""
+        """Attempt to establish a connection to the tracker."""
 
         i = netloc.find(':')
         if i >= 0:
