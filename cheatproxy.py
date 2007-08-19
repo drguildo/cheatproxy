@@ -71,8 +71,8 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         try:
             soc.connect(host_port)
-        except socket.error, msg:
-            self.send_error(502, msg)
+        except socket.error:
+            self.send_error(502)
             return False
 
         return True
