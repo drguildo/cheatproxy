@@ -1,0 +1,10 @@
+cheatproxy uses a file to map BitTorrent trackers to a number which the
+amount of uploaded data will be multiplied by.
+
+By default cheatproxy will look for a file called "trackers" in the
+current directory but you can use the -f command option to specify an
+alternative. The "default" mapping will be used when no other is
+applicable.
+
+cheatproxy comes with a sample file called, unsurprisingly, "trackers"
+which illustrates the syntax.
