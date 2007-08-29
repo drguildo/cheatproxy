@@ -1,3 +1,8 @@
+cheatproxy is a HTTP proxy which intercepts communication with
+BitTorrent trackers and modifies the amount of data uploaded. By default
+it listens on localhost:8000 so it should simply be a case of running
+cheatproxy and configuring your BitTorrent client accordingly.
+
 cheatproxy uses a file to map BitTorrent trackers to a number which the
 amount of uploaded data will be multiplied by.
 
