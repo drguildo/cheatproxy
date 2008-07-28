@@ -13,6 +13,7 @@ import sys
 import urlparse
 
 import BaseHTTPServer
+import SocketServer
 
 import cheatbt
 
@@ -104,6 +105,11 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             if count == max_idling:
                 break
 
+class CheatProxy(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+    def __init__(self, host, port):
+        BaseHTTPServer.HTTPServer.__init__(self, (host, port),
+                CheatHandler)
+
 def usage():
     """Prints usage information and exits."""
 
@@ -148,7 +154,7 @@ def main():
         if opt == "-h":
             usage()
 
-    httpd = BaseHTTPServer.HTTPServer((host, port), CheatHandler)
+    httpd = CheatProxy(host, port)
 
     logger = logging.getLogger("cheatproxy")
     logger.info("listening on %s:%d" % (host, port))
