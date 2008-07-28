@@ -51,7 +51,7 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 # subclass of, insists on converting headers to lowercase when
                 # accessed conventionally (i.e. as a dict).
                 for header in self.headers.headers:
-                    soc.send(header)
+                    soc.send(header.strip() + '\r\n')
                     logger.debug(repr(header))
                 soc.send("\r\n")
                 self._read_write(soc)
