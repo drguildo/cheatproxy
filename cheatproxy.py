@@ -81,6 +81,8 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         """Pass data between the remote server and the client. I
         think."""
 
+        logger = logging.getLogger("cheatproxy")
+
         rlist = [self.connection, soc]
         wlist = []
         count = 0
@@ -95,10 +97,13 @@ class CheatHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                         out = self.connection
                     else:
                         out = soc
-                    data = i.recv(8192)
-                    if data:
-                        out.send(data)
-                        count = 0
+                    try:
+                        data = i.recv(8192)
+                        if data:
+                            out.send(data)
+                            count = 0
+                    except socket.error, msg:
+                        logger.info(msg)
             else:
                 pass
             if count == max_idling:
